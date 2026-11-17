@@ -5,13 +5,13 @@ let data=JSON.parse(dataNode.textContent);
 const original=JSON.parse(JSON.stringify(data));
 const $=id=>document.getElementById(id);
 let current=0, touchStart=null;
-// A wheel gesture is one burst of wheel events. Don't count inertial tail events.
-// Shorter input lock removes the sluggish feel of the previous 850ms/420ms setup.
+// React to a fresh wheel gesture immediately, without a long global lock.
+// Short idle detection + acceleration detection separates consecutive trackpad swipes.
 let wheelAccum=0, wheelDirection=0, gestureConsumed=false;
-let wheelQuietTimer=null, wheelGestureStart=0, lastWheelEvent=0;
-const WHEEL_THRESHOLD=30;
-const WHEEL_QUIET_MS=210;
-const MIN_GESTURE_MS=360;
+let lastWheelEvent=0, lastAdvance=0, peakAfterAdvance=0, prevMagnitude=0;
+const WHEEL_THRESHOLD=24;
+const WHEEL_IDLE_MS=105;
+const MIN_BETWEEN_CHANGES_MS=125;
 let swapToken=0;
 
 function makeScenes(){return [data.intro,...data.products,data.outro];}
@@ -43,7 +43,7 @@ function show(i){
    leaving.classList.add('product-leaving');
    img.parentNode.insertBefore(leaving,img);
    requestAnimationFrame(()=>leaving.classList.add('leave-now'));
-   setTimeout(()=>leaving.remove(),550);
+   setTimeout(()=>leaving.remove(),300);
  }
  img.style.transition='none';
  img.classList.remove('active');
@@ -73,31 +73,36 @@ window.addEventListener('wheel',e=>{
  if(isEditing())return;
  e.preventDefault();
  const now=performance.now();
- // Normalize line/page wheel modes, since devices report different units.
  const unit=e.deltaMode===1?16:e.deltaMode===2?window.innerHeight:1;
  const dy=e.deltaY*unit;
- if(Math.abs(dy)<0.5)return;
- // When events had fully stopped, begin a fresh gesture.
- if(!lastWheelEvent || now-lastWheelEvent>WHEEL_QUIET_MS && now-wheelGestureStart>=MIN_GESTURE_MS){
-   wheelAccum=0;wheelDirection=0;gestureConsumed=false;wheelGestureStart=now;
+ const magnitude=Math.abs(dy);
+ if(magnitude<0.4)return;
+ const direction=Math.sign(dy);
+ const idle=now-lastWheelEvent;
+ const changedDirection=direction!==wheelDirection;
+ // Silence or reversal starts a new gesture right away.
+ if(!lastWheelEvent || idle>WHEEL_IDLE_MS || changedDirection){
+   wheelAccum=0;gestureConsumed=false;peakAfterAdvance=0;
+ }
+ // During a long stream, a new deliberate acceleration is also a new swipe.
+ // Ignore small inertial events so a single swipe rarely skips two products.
+ else if(gestureConsumed && now-lastAdvance>MIN_BETWEEN_CHANGES_MS &&
+         magnitude>Math.max(15,peakAfterAdvance*1.35) &&
+         magnitude>prevMagnitude*1.22){
+   gestureConsumed=false;wheelAccum=0;peakAfterAdvance=0;
  }
  lastWheelEvent=now;
- const direction=Math.sign(dy);
- if(direction!==wheelDirection){wheelDirection=direction;wheelAccum=0;}
- if(!gestureConsumed){
-   wheelAccum+=Math.min(Math.abs(dy),140);
-   if(wheelAccum>=WHEEL_THRESHOLD){
-     gestureConsumed=true;
-     advance(direction);
-   }
+ wheelDirection=direction;
+ prevMagnitude=magnitude;
+ if(gestureConsumed){peakAfterAdvance=Math.max(peakAfterAdvance,magnitude);return;}
+ wheelAccum+=Math.min(magnitude,125);
+ if(wheelAccum>=WHEEL_THRESHOLD && now-lastAdvance>=MIN_BETWEEN_CHANGES_MS){
+   advance(direction);
+   lastAdvance=now;
+   gestureConsumed=true;
+   peakAfterAdvance=magnitude;
+   wheelAccum=0;
  }
- clearTimeout(wheelQuietTimer);
- const release=()=>{
-   const elapsed=performance.now()-wheelGestureStart;
-   if(elapsed<MIN_GESTURE_MS){wheelQuietTimer=setTimeout(release,MIN_GESTURE_MS-elapsed);return;}
-   gestureConsumed=false;wheelAccum=0;wheelDirection=0;lastWheelEvent=0;
- };
- wheelQuietTimer=setTimeout(release,WHEEL_QUIET_MS);
 },{passive:false});
 document.addEventListener('touchstart',e=>{if(isEditing())return;touchStart=e.touches[0].clientY},{passive:true});
 document.addEventListener('touchmove',e=>{if(touchStart!==null&&!isEditing())e.preventDefault()},{passive:false});
