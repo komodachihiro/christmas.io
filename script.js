@@ -3,8 +3,7 @@
 const data=JSON.parse(document.getElementById('lp-data').textContent);
 const $=id=>document.getElementById(id);
 const scenes=[data.intro,...data.products,data.outro];
-let current=-1,queued=false,token=0,modalOpen=false,previousFocus=null;
-const STEP=230;
+let current=-1,token=0,modalOpen=false,previousFocus=null;
 $('smallTop').textContent=data.global.smalltop;
 $('heroTitle').textContent=data.global.heroTitle;
 $('fairDate').textContent=data.global.date;
@@ -47,15 +46,51 @@ function show(index){
   preload.onload=apply;preload.onerror=apply;preload.src=src;
   if(preload.complete)apply();
 }
-function sync(){queued=false;if(modalOpen)return;show(Math.round(window.scrollY/STEP));}
-const track=document.createElement('div');
-track.id='scroll-track';track.setAttribute('aria-hidden','true');
-track.style.height=`calc(100dvh + ${(scenes.length-1)*STEP}px)`;
-document.body.appendChild(track);
-document.documentElement.classList.add('native-scroll');
+// 商品はホイールの1ジェスチャー/タッチの1スワイプにつき1点ずつ切り替えます。
+// 切り替えアニメーションの完了を待つロックは設けません。
+// トラックパッドの慣性イベントは、一連の操作として扱います。
+const WHEEL_GESTURE_END_MS = 110;
+const WHEEL_MIN_DELTA = 3;
+let wheelGestureOpen = false;
+let wheelQuietTimer = null;
+function nextProduct(direction) {
+  if (modalOpen || !direction) return;
+  show(current + (direction > 0 ? 1 : -1));
+}
+window.addEventListener('wheel', (e) => {
+  if (modalOpen) return; // 詳細画像のスクロールは妨げない
+  e.preventDefault();
+  // 新しいホイール入力が来るたびに「操作終了」の時刻を更新する。
+  clearTimeout(wheelQuietTimer);
+  wheelQuietTimer = setTimeout(() => { wheelGestureOpen = false; }, WHEEL_GESTURE_END_MS);
+  if (wheelGestureOpen || Math.abs(e.deltaY) < WHEEL_MIN_DELTA) return;
+  wheelGestureOpen = true;
+  nextProduct(e.deltaY);
+}, {passive:false});
+
+// スマートフォンでは、距離が一定以上のスワイプ1回で1商品進める。
+let touchStartY = null;
+let touchStartX = null;
+window.addEventListener('touchstart', e => {
+  if (modalOpen || e.touches.length !== 1) return;
+  touchStartY = e.touches[0].clientY;
+  touchStartX = e.touches[0].clientX;
+}, {passive:true});
+window.addEventListener('touchend', e => {
+  if (modalOpen || touchStartY === null || !e.changedTouches.length) return;
+  const dy = touchStartY - e.changedTouches[0].clientY;
+  const dx = touchStartX - e.changedTouches[0].clientX;
+  touchStartY = null;
+  touchStartX = null;
+  if (Math.abs(dy) >= 35 && Math.abs(dy) > Math.abs(dx) * 1.2) nextProduct(dy);
+}, {passive:true});
+window.addEventListener('touchcancel',()=>{touchStartY=null;touchStartX=null},{passive:true});
+window.addEventListener('keydown', e => {
+  if (modalOpen || e.altKey || e.ctrlKey || e.metaKey) return;
+  if (['ArrowDown','PageDown',' '].includes(e.key)) {e.preventDefault();nextProduct(1)}
+  if (['ArrowUp','PageUp'].includes(e.key)) {e.preventDefault();nextProduct(-1)}
+});
 document.body.classList.add('lp-public');
-window.addEventListener('scroll',()=>{if(!queued&&!modalOpen){queued=true;requestAnimationFrame(sync)}},{passive:true});
-window.addEventListener('pageshow',()=>requestAnimationFrame(sync));
 $('details').addEventListener('click',()=>{
  if(!(current>0&&current<=data.products.length))return;
  const s=scenes[current]; previousFocus=document.activeElement;
@@ -78,7 +113,7 @@ function closeDetail(){
  $('detailModal').setAttribute('aria-hidden','true');
  document.body.classList.remove('modal-open');
  if(previousFocus?.focus)previousFocus.focus();
- requestAnimationFrame(sync);
+
 }
 $('closeDetail').addEventListener('click',closeDetail);
 $('detailModal').addEventListener('click',e=>{if(e.target===$('detailModal'))closeDetail()});
@@ -99,5 +134,5 @@ for(let i=0;i<38;i++){
  f.style.cssText=`width:${w}px;height:${w}px;left:${Math.random()*95}%;top:${Math.random()*70}%;animation-duration:${6+Math.random()*9}s;animation-delay:${-Math.random()*13}s`;
  $('snow').appendChild(f);
 }
-requestAnimationFrame(sync);
+show(0);
 })();

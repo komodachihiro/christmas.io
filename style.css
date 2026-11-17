@@ -262,3 +262,7 @@ html.native-scroll body.modal-open{overflow:hidden!important;touch-action:none!i
 @media (max-height: 620px) {
   .visual-area .globe-wrap { transform: translateY(6px); }
 }
+
+/* One swipe / wheel gesture = one product. The stage never scrolls. */
+html,body{overflow:hidden!important;overscroll-behavior:none!important;}
+.scene{touch-action:pan-y;}
