@@ -260,3 +260,9 @@ html.native-scroll body.modal-open{overflow:hidden!important;touch-action:none!i
 /* One swipe / wheel gesture = one product. The stage never scrolls. */
 html,body{overflow:hidden!important;overscroll-behavior:none!important;}
 .scene{touch-action:pan-y;}
+/* 商品詳細リンク「詳しく見る」を商品情報パネル中央に配置 */
+.more-link {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
