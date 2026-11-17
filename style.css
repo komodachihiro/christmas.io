@@ -32,7 +32,7 @@ button{font:inherit;cursor:pointer}
 .gift{position:absolute;bottom:18%;left:16%;width:17%;height:13%;background:#e63a2e;box-shadow:inset 15px 0 #f35f4b;z-index:4}
 .gift:after{content:"";position:absolute;left:43%;top:0;height:100%;width:16%;background:#f1c676}
 .gift:before{content:"";position:absolute;left:0;top:40%;height:17%;width:100%;background:#f1c676}
-.product{position:absolute;left:50%;top:47%;width:60%;height:65%;object-fit:contain;transform:translate(-50%,-50%) translateY(75px) scale(.75);opacity:0;filter:drop-shadow(9px 13px 6px #003b3288);z-index:7;transition:opacity .44s ease,transform .7s cubic-bezier(.2,.82,.2,1)}
+.product{position:absolute;left:50%;top:47%;width:60%;height:65%;object-fit:contain;transform:translate(-50%,-50%) translateY(75px) scale(.75);opacity:0;filter:drop-shadow(9px 13px 6px #003b3288);z-index:7;transition:opacity .35s ease,transform .58s cubic-bezier(.18,.75,.23,1)}
 .product.active{transform:translate(-50%,-50%) translateY(-6px) scale(1);opacity:1}
 .snow{position:absolute;inset:0;z-index:10;pointer-events:none;overflow:hidden;border-radius:50%}
 .flake{position:absolute;border-radius:50%;background:#fff;animation:fall linear infinite;opacity:.8}
@@ -145,3 +145,8 @@ body{ touch-action:pan-x; }
 @media  (max-width:820px) and (max-height:590px) {.globe-wrap{width:min(60vw,245px,calc((100dvh - 225px)*.9));}}
 .screen{grid-template-rows:minmax(0,1fr)}
 @media(max-width:820px){.screen{grid-template-rows:minmax(0,1fr)}}
+
+/* Smooth product crossfade: previous product floats up and fades away. */
+.product-leaving{pointer-events:none;opacity:1;transform:translate(-50%,-50%) translateY(-6px) scale(1);transition:opacity .42s ease-in,transform .48s cubic-bezier(.4,0,.7,1);}
+.product-leaving.leave-now{opacity:0;transform:translate(-50%,-50%) translateY(-55px) scale(.9);}
+@media(prefers-reduced-motion:reduce){.product-leaving{transition:none!important}}
