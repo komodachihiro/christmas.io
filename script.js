@@ -9,9 +9,9 @@ let current=0, touchStart=null;
 // Short idle detection + acceleration detection separates consecutive trackpad swipes.
 let wheelAccum=0, wheelDirection=0, gestureConsumed=false;
 let lastWheelEvent=0, lastAdvance=0, peakAfterAdvance=0, prevMagnitude=0;
-const WHEEL_THRESHOLD=24;
-const WHEEL_IDLE_MS=105;
-const MIN_BETWEEN_CHANGES_MS=125;
+const WHEEL_THRESHOLD=12;
+const WHEEL_IDLE_MS=70;
+const MIN_BETWEEN_CHANGES_MS=70;
 let swapToken=0;
 
 function makeScenes(){return [data.intro,...data.products,data.outro];}
@@ -43,7 +43,7 @@ function show(i){
    leaving.classList.add('product-leaving');
    img.parentNode.insertBefore(leaving,img);
    requestAnimationFrame(()=>leaving.classList.add('leave-now'));
-   setTimeout(()=>leaving.remove(),300);
+   setTimeout(()=>leaving.remove(),190);
  }
  img.style.transition='none';
  img.classList.remove('active');
@@ -106,7 +106,7 @@ window.addEventListener('wheel',e=>{
 },{passive:false});
 document.addEventListener('touchstart',e=>{if(isEditing())return;touchStart=e.touches[0].clientY},{passive:true});
 document.addEventListener('touchmove',e=>{if(touchStart!==null&&!isEditing())e.preventDefault()},{passive:false});
-document.addEventListener('touchend',e=>{if(touchStart===null)return;const delta=touchStart-e.changedTouches[0].clientY;if(Math.abs(delta)>42)advance(Math.sign(delta));touchStart=null},{passive:true});
+document.addEventListener('touchend',e=>{if(touchStart===null)return;const delta=touchStart-e.changedTouches[0].clientY;if(Math.abs(delta)>24)advance(Math.sign(delta));touchStart=null},{passive:true});
 document.addEventListener('keydown',e=>{
  if(isEditing()||['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;
  if(['ArrowDown','PageDown',' ','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();advance(['ArrowUp','PageUp'].includes(e.key)?-1:1)}
