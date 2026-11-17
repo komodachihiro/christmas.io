@@ -4,7 +4,13 @@ const dataNode=document.getElementById('lp-data');
 let data=JSON.parse(dataNode.textContent);
 const original=JSON.parse(JSON.stringify(data));
 const $=id=>document.getElementById(id);
-let current=0, transitionTimer=null,locked=false,wheelTotal=0, wheelReset=null,touchStart=null;
+let current=0, transitionTimer=null, wheelTotal=0, wheelReset=null,touchStart=null;
+// Trackpad and mouse wheel can emit dozens of events per physical gesture.
+// Keep the entire burst as one navigation action, including inertial scrolling.
+let gestureActive=false, gestureStartedAt=0, gestureIdleTimer=null;
+const WHEEL_THRESHOLD=42;
+const WHEEL_IDLE_MS=420;
+const GESTURE_MIN_MS=850;
 function makeScenes(){return [data.intro,...data.products,data.outro];}
 function textNode(id,value){$(id).textContent=value||'';}
 function globalRender(){textNode('smallTop',data.global.smalltop);
@@ -34,9 +40,29 @@ $('order').addEventListener('click',()=>{
 });
 window.addEventListener('wheel',e=>{
  if(isEditing())return;
- e.preventDefault();wheelTotal+=e.deltaY;clearTimeout(wheelReset);wheelReset=setTimeout(()=>wheelTotal=0,160);
- if(locked||Math.abs(wheelTotal)<38)return;
- const dir=Math.sign(wheelTotal);wheelTotal=0;advance(dir);locked=true;setTimeout(()=>locked=false,600);
+ e.preventDefault();
+ // Every event extends the same gesture until the wheel/trackpad is quiet.
+ clearTimeout(gestureIdleTimer);
+ const releaseWhenQuiet=()=>{
+   const remaining=GESTURE_MIN_MS-(Date.now()-gestureStartedAt);
+   if(remaining>0){ gestureIdleTimer=setTimeout(releaseWhenQuiet,remaining);return; }
+   gestureActive=false;
+   wheelTotal=0;
+ };
+ if(gestureActive){
+   gestureIdleTimer=setTimeout(releaseWhenQuiet,WHEEL_IDLE_MS);
+   return;
+ }
+ wheelTotal+=e.deltaY;
+ clearTimeout(wheelReset);
+ wheelReset=setTimeout(()=>wheelTotal=0,220);
+ if(Math.abs(wheelTotal)<WHEEL_THRESHOLD)return;
+ const dir=Math.sign(wheelTotal);
+ wheelTotal=0;
+ gestureActive=true;
+ gestureStartedAt=Date.now();
+ advance(dir);
+ gestureIdleTimer=setTimeout(releaseWhenQuiet,WHEEL_IDLE_MS);
 },{passive:false});
 document.addEventListener('touchstart',e=>{if(isEditing())return;touchStart=e.touches[0].clientY},{passive:true});
 document.addEventListener('touchmove',e=>{if(touchStart!==null&&!isEditing())e.preventDefault()},{passive:false});
