@@ -4,13 +4,16 @@ const dataNode=document.getElementById('lp-data');
 let data=JSON.parse(dataNode.textContent);
 const original=JSON.parse(JSON.stringify(data));
 const $=id=>document.getElementById(id);
-let current=0, transitionTimer=null, wheelTotal=0, wheelReset=null,touchStart=null;
-// Trackpad and mouse wheel can emit dozens of events per physical gesture.
-// Keep the entire burst as one navigation action, including inertial scrolling.
-let gestureActive=false, gestureStartedAt=0, gestureIdleTimer=null;
-const WHEEL_THRESHOLD=42;
-const WHEEL_IDLE_MS=420;
-const GESTURE_MIN_MS=850;
+let current=0, touchStart=null;
+// A wheel gesture is one burst of wheel events. Don't count inertial tail events.
+// Shorter input lock removes the sluggish feel of the previous 850ms/420ms setup.
+let wheelAccum=0, wheelDirection=0, gestureConsumed=false;
+let wheelQuietTimer=null, wheelGestureStart=0, lastWheelEvent=0;
+const WHEEL_THRESHOLD=30;
+const WHEEL_QUIET_MS=210;
+const MIN_GESTURE_MS=360;
+let swapToken=0;
+
 function makeScenes(){return [data.intro,...data.products,data.outro];}
 function textNode(id,value){$(id).textContent=value||'';}
 function globalRender(){textNode('smallTop',data.global.smalltop);
@@ -28,8 +31,36 @@ function show(i){
  $('order').hidden=current!==scenes.length-1; $('disclaimer').hidden=current!==scenes.length-1;
  $('tree').style.opacity=current===0||current===scenes.length-1?'1':'.33';
  const pv=$('price');pv.textContent=s.price||'';pv.hidden=!s.price;
- const img=$('product');img.classList.remove('active');clearTimeout(transitionTimer);
- transitionTimer=setTimeout(()=>{img.src=s.img||'';img.alt=s.img?s.name:'';if(s.img){requestAnimationFrame(()=>img.classList.add('active'))}},170);
+ const img=$('product');
+ // Animate the departing image independently, and preload the next image.
+ // This prevents the brief blank frame caused by replacing img.src mid-transition.
+ const token=++swapToken;
+ const oldSrc=img.getAttribute('src');
+ if(oldSrc && img.classList.contains('active')){
+   const leaving=img.cloneNode(false);
+   leaving.removeAttribute('id');
+   leaving.classList.remove('active');
+   leaving.classList.add('product-leaving');
+   img.parentNode.insertBefore(leaving,img);
+   requestAnimationFrame(()=>leaving.classList.add('leave-now'));
+   setTimeout(()=>leaving.remove(),550);
+ }
+ img.style.transition='none';
+ img.classList.remove('active');
+ img.style.opacity='0';
+ const target=s.img||'';
+ const reveal=()=>{
+   if(token!==swapToken)return;
+   img.src=target;img.alt=target?s.name:'';
+   if(target){requestAnimationFrame(()=>requestAnimationFrame(()=>{if(token===swapToken){img.style.transition='';img.style.opacity='';img.classList.add('active');}}));}
+ };
+ if(target){
+   const preload=new Image();
+   preload.onload=reveal;preload.onerror=reveal;
+   preload.src=target;
+   if(preload.complete)reveal();
+ }else{img.removeAttribute('src');img.alt='';}
+
 }
 function advance(dir){show(current+dir)}
 function isEditing(){return false}
@@ -41,28 +72,32 @@ $('order').addEventListener('click',()=>{
 window.addEventListener('wheel',e=>{
  if(isEditing())return;
  e.preventDefault();
- // Every event extends the same gesture until the wheel/trackpad is quiet.
- clearTimeout(gestureIdleTimer);
- const releaseWhenQuiet=()=>{
-   const remaining=GESTURE_MIN_MS-(Date.now()-gestureStartedAt);
-   if(remaining>0){ gestureIdleTimer=setTimeout(releaseWhenQuiet,remaining);return; }
-   gestureActive=false;
-   wheelTotal=0;
- };
- if(gestureActive){
-   gestureIdleTimer=setTimeout(releaseWhenQuiet,WHEEL_IDLE_MS);
-   return;
+ const now=performance.now();
+ // Normalize line/page wheel modes, since devices report different units.
+ const unit=e.deltaMode===1?16:e.deltaMode===2?window.innerHeight:1;
+ const dy=e.deltaY*unit;
+ if(Math.abs(dy)<0.5)return;
+ // When events had fully stopped, begin a fresh gesture.
+ if(!lastWheelEvent || now-lastWheelEvent>WHEEL_QUIET_MS && now-wheelGestureStart>=MIN_GESTURE_MS){
+   wheelAccum=0;wheelDirection=0;gestureConsumed=false;wheelGestureStart=now;
  }
- wheelTotal+=e.deltaY;
- clearTimeout(wheelReset);
- wheelReset=setTimeout(()=>wheelTotal=0,220);
- if(Math.abs(wheelTotal)<WHEEL_THRESHOLD)return;
- const dir=Math.sign(wheelTotal);
- wheelTotal=0;
- gestureActive=true;
- gestureStartedAt=Date.now();
- advance(dir);
- gestureIdleTimer=setTimeout(releaseWhenQuiet,WHEEL_IDLE_MS);
+ lastWheelEvent=now;
+ const direction=Math.sign(dy);
+ if(direction!==wheelDirection){wheelDirection=direction;wheelAccum=0;}
+ if(!gestureConsumed){
+   wheelAccum+=Math.min(Math.abs(dy),140);
+   if(wheelAccum>=WHEEL_THRESHOLD){
+     gestureConsumed=true;
+     advance(direction);
+   }
+ }
+ clearTimeout(wheelQuietTimer);
+ const release=()=>{
+   const elapsed=performance.now()-wheelGestureStart;
+   if(elapsed<MIN_GESTURE_MS){wheelQuietTimer=setTimeout(release,MIN_GESTURE_MS-elapsed);return;}
+   gestureConsumed=false;wheelAccum=0;wheelDirection=0;lastWheelEvent=0;
+ };
+ wheelQuietTimer=setTimeout(release,WHEEL_QUIET_MS);
 },{passive:false});
 document.addEventListener('touchstart',e=>{if(isEditing())return;touchStart=e.touches[0].clientY},{passive:true});
 document.addEventListener('touchmove',e=>{if(touchStart!==null&&!isEditing())e.preventDefault()},{passive:false});
