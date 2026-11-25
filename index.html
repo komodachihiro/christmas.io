@@ -1,6 +1,213 @@
 <!DOCTYPE html>
-<html lang="ja"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><title>YURUWELL | HAPPY HOLIDAYS SPECIAL SALE</title>
-<link href="style.css" rel="stylesheet"/></head><body>
-<div class="screen"><main class="scene" id="stage"><div class="left"><div class="smalltop" id="smallTop">2026 CHRISTMAS FAIR</div><h1 class="heading" id="heroTitle">HAPPY<br/>HOLIDAYS<br/>SPECIAL<br/>SALE</h1><div class="date" id="fairDate">2026 11.1 ▶ 12.18 fri</div><p class="tagline" id="heroCopy">自分へのご褒美に、<br/>とっておきのプレゼントを。</p><button class="panel detail-trigger" data-category="CHRISTMAS FAIR" id="details" type="button" aria-label="商品詳細を見る"><h2 class="product-title" id="name">スクロールで、魔法がはじまる。</h2><p class="product-desc" id="description">画面はそのまま。スノードームの中だけが変わります。</p><span class="more-link" id="moreLink" hidden>詳しく見る <span aria-hidden="true">›</span></span></button><p class="message" id="hint">ホイールを下へ動かすと次の商品が登場 ↓</p><span class="price-view" hidden="" id="price"></span></div><div class="visual-area"><div class="globe-wrap"><div class="glass"><div class="tree" id="tree"><div class="star">★</div><div class="b b1"></div><div class="b b2"></div><div class="b b3"></div></div><div class="ground"></div><div class="gift"></div><img alt="" class="product" id="product"/><div class="snow" id="snow"></div><div class="shine-left"></div></div><div class="base"></div></div></div></main><div class="bottom-order"><button class="cta fixed-order" id="order" type="button">注文はこちら <span aria-hidden="true">↗</span></button></div></div><div class="detail-modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle" aria-hidden="true" hidden><div class="detail-sheet"><header class="detail-modal-header"><h2 id="detailModalTitle">商品詳細</h2><button type="button" id="closeDetail" class="close-detail" aria-label="閉じる">×</button></header><div class="detail-modal-content"><img id="detailImage" alt="商品詳細画像"/><p id="detailNoImage" hidden>詳細画像を準備中です。</p></div></div></div>
-<script id="lp-data" type="application/json">{"global": {"brand": "YURUWELL", "smalltop": "2026 CHRISTMAS FAIR", "heroTitle": "HAPPY\nHOLIDAYS\nSPECIAL\nSALE", "date": "2026 11.1 ▶ 12.18 fri", "copy": "自分へのご褒美に、\nとっておきのプレゼントを。", "deadline": "12月18日（金）まで", "orderLabel": "注文はこちら ↗", "orderUrl": ""}, "intro": {"category": "INTRO", "name": "スノードームの世界へようこそ", "desc": "ホイールを回す・画面をスワイプすると、ここで商品が次々と浮き上がります。"}, "products": [{"name": "リフトロジー", "desc": "表情筋に着目したEMSと温感で、引き締めに特化したリフトケア。", "img": "images/product_01.png", "category": "FACE CARE", "price": "", "detailImg": "images/detail_01.png"}, {"name": "リフトロジー プロ", "desc": "独自EMS波型の進化で、リズミカルかつパワフルな体感。", "img": "images/product_02.png", "category": "FACE CARE", "price": "", "detailImg": "images/detail_02.png"}, {"name": "フォトプラス EX スムース S", "desc": "毛穴・乾燥・ハリを網羅する多機能モード搭載。", "img": "images/product_03.png", "category": "FACE CARE", "price": "", "detailImg": "images/detail_03.png"}, {"name": "WAVY ニードルリフトポインター SP", "desc": "ポイント刺激とローラーでフェイスラインにアプローチ。", "img": "images/product_04.png", "category": "FACE CARE", "price": "", "detailImg": "images/detail_04.png"}, {"name": "メソスタイルゲル プレミア", "desc": "ボディ・フェイス両用の水溶性ゲル。", "img": "images/product_05.png", "category": "FACE CARE", "price": "", "detailImg": "images/detail_05.png"}, {"name": "リフトドライヤー スマート", "desc": "速乾性のある艶髪ドライヤー、コンパクトモデル。", "img": "images/product_06.png", "category": "HAIR CARE", "price": "", "detailImg": "images/detail_06.png"}, {"name": "ミーゼ エアリーミー", "desc": "風温と風量を切り替えて、季節や髪の状態に合うケアを。", "img": "images/product_07.png", "category": "HAIR CARE", "price": "", "detailImg": "images/detail_07.png"}, {"name": "ディープモイスト リペアトリートメント", "desc": "トリプルリペア処方でダメージを集中補修。", "img": "images/product_08.png", "category": "HAIR CARE", "price": "", "detailImg": "images/detail_08.png"}, {"name": "ニードルヘッドスパ リフト", "desc": "極点集中ケアで新しいヘッドスパ体験。", "img": "images/product_09.png", "category": "HAIR CARE", "price": "", "detailImg": "images/detail_09.png"}], "outro": {"category": "ORDER", "name": "12月18日（金）ご注文締切", "desc": "お気に入りの商品は見つかりましたか？ ご注文・お問い合わせはこちら。"}}</script>
-<script defer="" src="script.js"></script></body></html>
+<html lang="ja">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+  <title>
+   YURUWELL | HAPPY HOLIDAYS SPECIAL SALE
+  </title>
+  <link href="style.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <div class="screen">
+   <main class="scene" id="stage">
+    <div class="left">
+     <div class="smalltop" id="smallTop">
+      2026 CHRISTMAS FAIR
+     </div>
+     <h1 class="heading" id="heroTitle">
+      HAPPY
+      <br/>
+      HOLIDAYS
+      <br/>
+      SPECIAL
+      <br/>
+      SALE
+     </h1>
+     <div class="date" id="fairDate">
+      2026 11.1 ▶ 12.18 fri
+     </div>
+     <p class="tagline" id="heroCopy">
+      自分へのご褒美に、
+      <br/>
+      とっておきのプレゼントを。
+     </p>
+     <button aria-label="商品詳細を見る" class="panel detail-trigger" data-category="CHRISTMAS FAIR" id="details" type="button">
+      <h2 class="product-title" id="name">
+       スクロールで、魔法がはじまる。
+      </h2>
+      <p class="product-desc" id="description">
+       画面はそのまま。スノードームの中だけが変わります。
+      </p>
+      <span class="more-link" hidden="" id="moreLink">
+       詳しく見る
+       <span aria-hidden="true">
+        ›
+       </span>
+      </span>
+     </button>
+     <p class="message" id="hint">
+      ホイールを下へ動かすと次の商品が登場 ↓
+     </p>
+     <span class="price-view" hidden="" id="price">
+     </span>
+    </div>
+    <div class="visual-area">
+     <div class="globe-wrap">
+      <div class="glass">
+       <div class="tree" id="tree">
+        <div class="star">
+         ★
+        </div>
+        <div class="b b1">
+        </div>
+        <div class="b b2">
+        </div>
+        <div class="b b3">
+        </div>
+       </div>
+       <div class="ground">
+       </div>
+       <div class="gift">
+       </div>
+       <img alt="" class="product" id="product"/>
+       <div class="snow" id="snow">
+       </div>
+       <div class="shine-left">
+       </div>
+      </div>
+      <div class="base">
+      </div>
+     </div>
+    </div>
+   </main>
+   <div class="bottom-order">
+    <button class="cta fixed-order" id="order" type="button">
+     注文はこちら
+     <span aria-hidden="true">
+      ↗
+     </span>
+    </button>
+   </div>
+  </div>
+  <div aria-hidden="true" aria-labelledby="detailModalTitle" aria-modal="true" class="detail-modal" hidden="" id="detailModal" role="dialog">
+   <div class="detail-sheet">
+    <header class="detail-modal-header">
+     <h2 id="detailModalTitle">
+      商品詳細
+     </h2>
+     <button aria-label="閉じる" class="close-detail" id="closeDetail" type="button">
+      ×
+     </button>
+    </header>
+    <div class="detail-modal-content">
+     <img alt="商品詳細画像" id="detailImage"/>
+     <p hidden="" id="detailNoImage">
+      詳細画像を準備中です。
+     </p>
+    </div>
+   </div>
+  </div>
+  <script id="lp-data" type="application/json">
+   {
+  "global": {
+    "brand": "YURUWELL",
+    "smalltop": "2026 CHRISTMAS FAIR",
+    "heroTitle": "HAPPY\nHOLIDAYS\nSPECIAL\nSALE",
+    "date": "2026 11.1 ▶ 12.18 fri",
+    "copy": "自分へのご褒美に、\nとっておきのプレゼントを。",
+    "deadline": "12月18日（金）まで",
+    "orderLabel": "注文はこちら ↗",
+    "orderUrl": "https://forms.gle/SEpae3DsSb3pKwaY7"
+  },
+  "intro": {
+    "category": "INTRO",
+    "name": "スノードームの世界へようこそ",
+    "desc": "ホイールを回す・画面をスワイプすると、ここで商品が次々と浮き上がります。",
+    "img": "images/product_00.png"
+  },
+  "products": [
+    {
+      "name": "リフトロジー",
+      "desc": "表情筋に着目したEMSと温感で、引き締めに特化したリフトケア。",
+      "img": "images/product_01.png",
+      "category": "FACE CARE",
+      "price": "",
+      "detailImg": "images/detail_01.png"
+    },
+    {
+      "name": "リフトロジー プロ",
+      "desc": "独自EMS波型の進化で、リズミカルかつパワフルな体感。",
+      "img": "images/product_02.png",
+      "category": "FACE CARE",
+      "price": "",
+      "detailImg": "images/detail_02.png"
+    },
+    {
+      "name": "フォトプラス EX スムース S",
+      "desc": "毛穴・乾燥・ハリを網羅する多機能モード搭載。",
+      "img": "images/product_03.png",
+      "category": "FACE CARE",
+      "price": "",
+      "detailImg": "images/detail_03.png"
+    },
+    {
+      "name": "WAVY ニードルリフトポインター SP",
+      "desc": "ポイント刺激とローラーでフェイスラインにアプローチ。",
+      "img": "images/product_04.png",
+      "category": "FACE CARE",
+      "price": "",
+      "detailImg": "images/detail_04.png"
+    },
+    {
+      "name": "メソスタイルゲル プレミア",
+      "desc": "ボディ・フェイス両用の水溶性ゲル。",
+      "img": "images/product_05.png",
+      "category": "FACE CARE",
+      "price": "",
+      "detailImg": "images/detail_05.png"
+    },
+    {
+      "name": "リフトドライヤー スマート",
+      "desc": "速乾性のある艶髪ドライヤー、コンパクトモデル。",
+      "img": "images/product_06.png",
+      "category": "HAIR CARE",
+      "price": "",
+      "detailImg": "images/detail_06.png"
+    },
+    {
+      "name": "ミーゼ エアリーミー",
+      "desc": "風温と風量を切り替えて、季節や髪の状態に合うケアを。",
+      "img": "images/product_07.png",
+      "category": "HAIR CARE",
+      "price": "",
+      "detailImg": "images/detail_07.png"
+    },
+    {
+      "name": "ディープモイスト リペアトリートメント",
+      "desc": "トリプルリペア処方でダメージを集中補修。",
+      "img": "images/product_08.png",
+      "category": "HAIR CARE",
+      "price": "",
+      "detailImg": "images/detail_08.png"
+    },
+    {
+      "name": "ニードルヘッドスパ リフト",
+      "desc": "極点集中ケアで新しいヘッドスパ体験。",
+      "img": "images/product_09.png",
+      "category": "HAIR CARE",
+      "price": "",
+      "detailImg": "images/detail_09.png"
+    }
+  ],
+  "outro": {
+    "category": "ORDER",
+    "name": "12月18日（金）ご注文締切",
+    "desc": "お気に入りの商品は見つかりましたか？ ご注文・お問い合わせはこちら。"
+  }
+}
+  </script>
+  <script defer="" src="script.js">
+  </script>
+ </body>
+</html>
