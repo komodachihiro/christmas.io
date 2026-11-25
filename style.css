@@ -1195,17 +1195,28 @@ html.native-scroll .screen, .screen {
   max-width: 430px;
 }
 
-/* Opening scene: all featured products inside the globe. */
+/* Initial collective product image only: visually enlarge and lower. */
 .glass img.product.intro-collage {
   width: 142%;
   height: 96%;
   top: 61%;
   left: 50%;
   object-fit: contain;
+  filter: drop-shadow(3px 8px 4px rgba(0,35,25,.18));
+}
+.glass img.product.intro-collage.active {
+  transform: translate(-50%, -50%) translateY(8px) scale(1.18);
 }
 
-.glass img.product.intro-collage.active {
-  transform: translate(-50%, -50%)
-             translateY(8px)
-             scale(1.18);
+/* 初回の集合商品画像のみ。HTMLの同設定が優先されます。 */
+.glass #product.intro-collage {
+  width: 154%;
+  height: 108%;
+  left: 50%;
+  top: 65%;
+  object-fit: contain;
+}
+
+.glass #product.intro-collage.active {
+  transform: translate(-50%, -50%) translateY(8px) scale(1.2);
 }

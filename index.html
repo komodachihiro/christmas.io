@@ -6,8 +6,21 @@
   <title>
    YURUWELL | HAPPY HOLIDAYS SPECIAL SALE
   </title>
-  <link href="style.css" rel="stylesheet"/>
- </head>
+  <link href="style.css?v=20261125-3" rel="stylesheet"/>
+   <!-- 初回の商品集合画像だけを拡大・下寄せ（HTML側にも指定し、確実に反映） -->
+  <style>
+    .glass #product.intro-collage {
+      width: 154% !important;
+      height: 108% !important;
+      left: 50% !important;
+      top: 65% !important;
+      object-fit: contain !important;
+    }
+    .glass #product.intro-collage.active {
+      transform: translate(-50%, -50%) translateY(8px) scale(1.2) !important;
+    }
+  </style>
+</head>
  <body>
   <div class="screen">
    <main class="scene" id="stage">
