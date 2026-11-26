@@ -117,7 +117,7 @@ button {
 }
 
 .product-title {
-  font-size:clamp(19px,2vw,32px);
+  font-size:clamp(21px,2vw,34px);
   line-height:1.4;
   margin:8px 0 5px;
   color:#153b2f
@@ -430,7 +430,7 @@ button {
     display:none
   }
   .product-title {
-    font-size:clamp(17px,4vw,24px);
+    font-size:clamp(19px,4vw,26px);
     margin:0
   }
   .product-desc {
@@ -617,7 +617,7 @@ button {
     text-overflow:ellipsis
   }
   .product-title {
-    font-size:clamp(16px,4.3vw,21px);
+    font-size:clamp(18px,4.3vw,23px);
     line-height:1.25;
     margin:4px 0 4px
   }
@@ -685,7 +685,7 @@ button {
     padding:14px 15px 12px
   }
   .product-title {
-    font-size:16px;
+    font-size:18px;
     margin:4px 0 2px
   }
   .product-desc {
