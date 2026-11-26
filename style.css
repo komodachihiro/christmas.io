@@ -1220,3 +1220,16 @@ html.native-scroll .screen, .screen {
 .glass #product.intro-collage.active {
   transform: translate(-50%, -50%) translateY(8px) scale(1.2);
 }
+
+/* 2026-11-25: 初回集合商品画像のみ。高さで自動縮小させない。 */
+.glass #product.intro-collage {
+  width: 140% !important;
+  height: auto !important;
+  max-width: none !important;
+  top: 65% !important;
+  left: 50% !important;
+  object-fit: contain !important;
+}
+.glass #product.intro-collage.active {
+  transform: translate(-50%, -50%) scale(1.10) !important;
+}

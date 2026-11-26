@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="ja">
  <head>
+  <meta name="lp-build" content="product00-direct-style-20261125-v4" />
   <meta charset="utf-8"/>
   <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
   <title>
    YURUWELL | HAPPY HOLIDAYS SPECIAL SALE
   </title>
-  <link href="style.css?v=20261125-3" rel="stylesheet"/>
+  <link href="style.css?v=20261125-4" rel="stylesheet"/>
    <!-- 初回の商品集合画像だけを拡大・下寄せ（HTML側にも指定し、確実に反映） -->
   <style>
+    /* この画像だけ、ほかの9商品の表示設定から切り離す */
     .glass #product.intro-collage {
-      width: 154% !important;
-      height: 108% !important;
+      width: 140% !important;
+      height: auto !important;
+      max-width: none !important;
       left: 50% !important;
       top: 65% !important;
       object-fit: contain !important;
     }
     .glass #product.intro-collage.active {
-      transform: translate(-50%, -50%) translateY(8px) scale(1.2) !important;
+      transform: translate(-50%, -50%) scale(1.10) !important;
     }
   </style>
 </head>
@@ -220,7 +223,7 @@
   }
 }
   </script>
-  <script defer="" src="script.js">
+  <script defer="" src="script.js?v=20261125-4">
   </script>
  </body>
 </html>
