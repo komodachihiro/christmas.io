@@ -1306,3 +1306,120 @@ html.native-scroll .screen, .screen {
     padding: 5px;
   }
 }
+
+
+/* 初回のスワイプ案内（既存のLP要素に変更なし） */
+.swipe-guide {
+  position: fixed;
+  inset: 0 auto 0 50%;
+  transform: translateX(-50%);
+  width: min(100%, 430px);
+  height: 100dvh;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 20px 100px;
+  background: rgba(0, 28, 22, 0.62);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .35s ease, visibility .35s ease;
+}
+.swipe-guide.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+.swipe-guide-card {
+  width: min(100%, 340px);
+  padding: 27px 20px 24px;
+  border: 2px solid #f1d092;
+  border-radius: 22px;
+  background: rgba(5, 73, 56, .96);
+  box-shadow: 0 14px 44px rgba(0, 20, 12, .5);
+  text-align: center;
+  color: #fff0ce;
+}
+.swipe-guide-eyebrow {
+  font: 800 11px/1.4 sans-serif;
+  letter-spacing: .2em;
+  color: #f1d092;
+}
+.swipe-guide-motion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 88px;
+  font-family: sans-serif;
+  color: #fff0ce;
+}
+.swipe-guide-hand {
+  display: inline-block;
+  font-size: 54px;
+  line-height: 1;
+  animation: swipe-guide-move 1.25s ease-in-out infinite;
+}
+.swipe-guide-arrow {
+  display: inline-block;
+  font: 900 44px/1 sans-serif;
+  animation: swipe-guide-arrow-move 1.25s ease-in-out infinite;
+}
+.swipe-guide-title {
+  margin: 2px 0 15px;
+  font: 900 clamp(22px, 6vw, 29px)/1.45 "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
+}
+.swipe-guide-pc {
+  display: inline-block;
+  margin: 0;
+  padding: 7px 16px;
+  border: 1px solid #f1d092;
+  border-radius: 999px;
+  font: 700 12px/1.35 sans-serif;
+}
+.swipe-guide-note {
+  margin: 15px 0 0;
+  font: 600 12px/1.6 sans-serif;
+}
+@keyframes swipe-guide-move {
+  0%, 100% { transform: translateY(10px); opacity: .8; }
+  50% { transform: translateY(-13px); opacity: 1; }
+}
+@keyframes swipe-guide-arrow-move {
+  0%, 100% { transform: translateY(8px); opacity: .55; }
+  50% { transform: translateY(-8px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .swipe-guide-hand, .swipe-guide-arrow { animation: none; }
+  .swipe-guide { transition: none; }
+}
+
+
+/* 商品詳細画面：ページ番号とスワイプ案内を大きくし、上へ2回だけ跳ねる */
+.detail-nav-help {
+  gap: 6px 13px;
+  padding: 12px 10px 15px;
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 900;
+}
+
+#detailCounter {
+  font-size: 17px;
+}
+
+.detail-nav-help.detail-bounce {
+  animation: detail-hint-hop .62s ease-in-out 2;
+}
+
+@keyframes detail-hint-hop {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-9px); }
+  65% { transform: translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-nav-help.detail-bounce {
+    animation: none;
+  }
+}

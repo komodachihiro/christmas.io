@@ -7,7 +7,7 @@
   <title>
    YURUWELL | HAPPY HOLIDAYS SPECIAL SALE
   </title>
-  <link href="style.css?v=20261126-detailnav-v1" rel="stylesheet"/>
+  <link href="style.css?v=20261126-detail-bounce-v1" rel="stylesheet"/>
    <!-- 初回の商品集合画像だけを拡大・下寄せ（HTML側にも指定し、確実に反映） -->
   <style>
     /* この画像だけ、ほかの9商品の表示設定から切り離す */
@@ -102,6 +102,19 @@
      注文はこちら
     </button>
    </div>
+  </div>
+  <!-- 初回表示だけ3秒間表示する操作案内 -->
+  <div class="swipe-guide" id="swipeGuide" aria-hidden="true">
+    <div class="swipe-guide-card">
+      <div class="swipe-guide-eyebrow">HOW TO EXPLORE</div>
+      <div class="swipe-guide-motion" aria-hidden="true">
+        <span class="swipe-guide-hand">☝</span>
+        <span class="swipe-guide-arrow">↑</span>
+      </div>
+      <p class="swipe-guide-title">上にスワイプして<br>商品をチェック！</p>
+      <p class="swipe-guide-pc">PCでは下にスクロール</p>
+      <p class="swipe-guide-note">おすすめ商品が次々に登場します</p>
+    </div>
   </div>
   <div aria-hidden="true" aria-labelledby="detailModalTitle" aria-modal="true" class="detail-modal" hidden="" id="detailModal" role="dialog">
    <div class="detail-sheet">
@@ -230,7 +243,7 @@
   }
 }
 </script>
-  <script defer="" src="script.js?v=20261126-order-loop-v2">
+  <script defer="" src="script.js?v=20261126-detail-bounce-v1">
   </script>
  </body>
 </html>

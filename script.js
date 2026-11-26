@@ -6,6 +6,24 @@ const scenes=[data.intro,...data.products,data.outro];
 let current=-1,token=0,modalOpen=false,previousFocus=null,detailIndex=0;
 let introAnimationFrame = null;
 
+// LPを開いたときだけ3秒間表示。操作したらすぐに消えます。
+const SWIPE_GUIDE_DURATION_MS = 3000;
+const swipeGuide = $('swipeGuide');
+let swipeGuideTimer = null;
+let swipeGuideShown = false;
+function dismissSwipeGuide() {
+  if (!swipeGuide) return;
+  clearTimeout(swipeGuideTimer);
+  swipeGuide.classList.remove('is-visible');
+}
+function showSwipeGuideOnce() {
+  if (!swipeGuide || swipeGuideShown) return;
+  swipeGuideShown = true;
+  swipeGuide.classList.add('is-visible');
+  swipeGuideTimer = setTimeout(dismissSwipeGuide, SWIPE_GUIDE_DURATION_MS);
+}
+
+
 // 初回画面と最後のORDER画面で、集合画像を90% → 110% → 100% (3秒) に拡大・収縮する。
 // CSSに transform: ... !important があるため、毎フレーム inline !important で更新する。
 function animateCollageImage(img, ticket) {
@@ -113,6 +131,7 @@ let wheelGestureOpen = false;
 let wheelQuietTimer = null;
 function nextProduct(direction) {
   if (modalOpen || !direction) return;
+  dismissSwipeGuide();
   // ORDER画面から下へ進むと、最初の紹介画面に戻る。
   // 逆方向は従来どおり（最初の画面より前には戻らない）。
   if (direction > 0 && current === scenes.length - 1) {
@@ -163,6 +182,13 @@ function showDetail(index) {
   const product = data.products[index];
   $('detailModalTitle').textContent = product.name;
   $('detailCounter').textContent = `${String(index + 1).padStart(2, '0')} / ${String(data.products.length).padStart(2, '0')}`;
+  // 詳細ページを開く・切り替えるたび、スワイプ案内を2回跳ねさせて停止。
+  const navHelp = document.querySelector('.detail-nav-help');
+  if (navHelp) {
+    navHelp.classList.remove('detail-bounce');
+    void navHelp.offsetWidth; // 同じクラスを付け直してアニメーションを再開
+    navHelp.classList.add('detail-bounce');
+  }
   const image = $('detailImage');
   const missing = $('detailNoImage');
   image.hidden = false;
@@ -175,6 +201,7 @@ function showDetail(index) {
 
 function openDetail() {
   if (!(current > 0 && current <= data.products.length)) return;
+  dismissSwipeGuide();
   previousFocus = document.activeElement;
   detailIndex = current - 1;
   modalOpen = true;
@@ -276,4 +303,5 @@ for(let i=0;i<38;i++){
  $('snow').appendChild(f);
 }
 show(0);
+showSwipeGuideOnce();
 })();
