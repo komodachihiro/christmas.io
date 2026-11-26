@@ -124,7 +124,7 @@ button {
 }
 
 .product-desc {
-  font:500 clamp(12px,1.05vw,16px)/1.7 "Yu Gothic",sans-serif;
+  font:500 clamp(16px,1.1vw,18px)/1.7 "Yu Gothic",sans-serif;
   margin:0
 }
 
