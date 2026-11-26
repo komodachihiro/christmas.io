@@ -1233,3 +1233,76 @@ html.native-scroll .screen, .screen {
 .glass #product.intro-collage.active {
   transform: translate(-50%, -50%) scale(1.10) !important;
 }
+
+
+/* 2026-11-26: 商品詳細モーダル内に固定の申し込みボタンと商品送りを追加 */
+.detail-modal {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
+}
+
+.detail-sheet {
+  max-height: calc(100dvh - 116px - env(safe-area-inset-bottom));
+}
+
+.detail-modal-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: none;
+}
+
+.detail-modal-content img {
+  max-height: calc(100dvh - 245px);
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.detail-nav-help {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  padding: 8px 10px 11px;
+  color: #205646;
+  background: #fff4df;
+  font: 700 11px/1.4 sans-serif;
+  text-align: center;
+}
+
+#detailCounter {
+  font-weight: 900;
+  color: #b82c27;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.detail-order-bar {
+  position: absolute;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  left: 50%;
+  width: min(calc(100% - 32px), 430px);
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.detail-order-button {
+  cursor: pointer;
+}
+
+@media (max-height: 540px) {
+  .detail-modal {
+    padding-top: 6px;
+    padding-bottom: 74px;
+  }
+  .detail-sheet {
+    max-height: calc(100dvh - 86px);
+  }
+  .detail-modal-content img {
+    max-height: calc(100dvh - 178px);
+  }
+  .detail-nav-help {
+    padding: 5px;
+  }
+}

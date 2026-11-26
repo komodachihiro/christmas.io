@@ -7,7 +7,7 @@
   <title>
    YURUWELL | HAPPY HOLIDAYS SPECIAL SALE
   </title>
-  <link href="style.css?v=20261125-4" rel="stylesheet"/>
+  <link href="style.css?v=20261126-detailnav-v1" rel="stylesheet"/>
    <!-- 初回の商品集合画像だけを拡大・下寄せ（HTML側にも指定し、確実に反映） -->
   <style>
     /* この画像だけ、ほかの9商品の表示設定から切り離す */
@@ -116,16 +116,25 @@
       ×
      </button>
     </header>
-    <div class="detail-modal-content">
+    <div class="detail-modal-content" id="detailModalContent">
      <img alt="商品詳細画像" id="detailImage"/>
      <p hidden="" id="detailNoImage">
       詳細画像を準備中です。
      </p>
     </div>
+    <div class="detail-nav-help" aria-live="polite">
+     <span id="detailCounter">01 / 09</span>
+     <span>上下スクロール・スワイプで次の商品へ</span>
+    </div>
+   </div>
+   <div class="detail-order-bar">
+    <button class="cta fixed-order detail-order-button" id="detailOrder" type="button">
+     お申し込みはこちら ↗
+    </button>
    </div>
   </div>
   <script id="lp-data" type="application/json">
-   {
+{
   "global": {
     "brand": "YURUWELL",
     "smalltop": "2026 CHRISTMAS FAIR",
@@ -138,8 +147,8 @@
   },
   "intro": {
     "category": "INTRO",
-    "name": "スノードームの世界へようこそ",
-    "desc": "ホイールを回す・画面をスワイプすると、ここで商品が次々と浮き上がります。",
+    "name": "クリスマスフェアへようこそ",
+    "desc": "画面をスワイプすると、スノードームからおすすめ商品が浮き上がります。",
     "img": "images/product_00.png"
   },
   "products": [
@@ -200,17 +209,17 @@
       "detailImg": "images/detail_07.png"
     },
     {
-      "name": "ディープモイスト リペアトリートメント",
-      "desc": "トリプルリペア処方でダメージを集中補修。",
-      "img": "images/product_08.png",
+      "name": "ニードルヘッドスパ リフト",
+      "desc": "極点集中ケアで新しいヘッドスパ体験。",
+      "img": "images/product_09.png",
       "category": "HAIR CARE",
       "price": "",
       "detailImg": "images/detail_08.png"
     },
     {
-      "name": "ニードルヘッドスパ リフト",
-      "desc": "極点集中ケアで新しいヘッドスパ体験。",
-      "img": "images/product_09.png",
+      "name": "ディープモイスト リペアトリートメント",
+      "desc": "トリプルリペア処方でダメージを集中補修。",
+      "img": "images/product_08.png",
       "category": "HAIR CARE",
       "price": "",
       "detailImg": "images/detail_09.png"
@@ -219,11 +228,12 @@
   "outro": {
     "category": "ORDER",
     "name": "12月18日（金）ご注文締切",
-    "desc": "お気に入りの商品は見つかりましたか？ ご注文・お問い合わせはこちら。"
+    "desc": "お気に入りの商品は見つかりましたか？ ご注文・お問い合わせはこちら。",
+    "img": "images/product_00.png"
   }
 }
-  </script>
-  <script defer="" src="script.js?v=20261125-4">
+</script>
+  <script defer="" src="script.js?v=20261126-order-loop-v2">
   </script>
  </body>
 </html>
